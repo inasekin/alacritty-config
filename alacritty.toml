@@ -1,0 +1,224 @@
+# ~/.config/alacritty/alacritty.toml
+# Alacritty в стиле WebStorm (New UI Dark) для работы в Neovim.
+# Хоткеи WebStorm (macOS keymap) отправляются в Neovim как Cmd/Super-комбинации
+# в формате kitty keyboard protocol (CSI u), а в Neovim их ловит webstorm.lua как <D-…>.
+# На Linux те же хоткеи работают с клавишей Super (Win) вместо Cmd.
+
+[general]
+live_config_reload = true
+
+[window]
+padding = { x = 10, y = 6 }
+dynamic_padding = true
+startup_mode = "Maximized"
+title = "WebStorm-ish"
+# macOS: Option работает как Alt (нужно для Alt+Enter, Alt+F7, Alt+Shift+↑↓)
+option_as_alt = "Both"
+# macOS: убрать кнопки окна, как в New UI (на Linux закомментируйте)
+# decorations = "Buttonless"
+
+[scrolling]
+history = 10000
+
+[font]
+size = 14.0
+# Межстрочный интервал ~1.2, как в WebStorm по умолчанию
+offset = { x = 0, y = 4 }
+glyph_offset = { x = 0, y = 2 }
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font"
+style = "Bold Italic"
+
+[cursor]
+style = { shape = "Block", blinking = "Off" }
+unfocused_hollow = true
+
+[mouse]
+hide_when_typing = true
+
+[selection]
+save_to_clipboard = false
+
+# --- Палитра, близкая к JetBrains New UI Dark ---
+[colors.primary]
+background = "#1E1F22"
+foreground = "#BCBEC4"
+
+[colors.cursor]
+text = "#1E1F22"
+cursor = "#CED0D6"
+
+[colors.selection]
+text = "CellForeground"
+background = "#214283"
+
+[colors.search.matches]
+foreground = "#1E1F22"
+background = "#D5B778"
+
+[colors.search.focused_match]
+foreground = "#1E1F22"
+background = "#F2C55C"
+
+[colors.normal]
+black   = "#2B2D30"
+red     = "#F75464"
+green   = "#6AAB73"
+yellow  = "#D5B778"
+blue    = "#56A8F5"
+magenta = "#C77DBB"
+cyan    = "#2AACB8"
+white   = "#BCBEC4"
+
+[colors.bright]
+black   = "#6F737A"
+red     = "#FA6675"
+green   = "#7EC482"
+yellow  = "#F2C55C"
+blue    = "#6BB8FF"
+magenta = "#D59BCB"
+cyan    = "#3DD4E0"
+white   = "#DFE1E5"
+
+# --- Хоткеи WebStorm -> Neovim ---
+# Модификатор в CSI u: 9 = Cmd, 10 = Cmd+Shift, 11 = Cmd+Alt.
+# Cmd+V остаётся за Alacritty: вставка работает и в шелле, и в nvim.
+[keyboard]
+# mode = "Alt" — привязка действует только в полноэкранных программах (nvim и т.п.).
+# В обычном шелле эти клавиши делают то, что положено в Alacritty: Cmd+W закрывает вкладку,
+# Cmd+1..9 переключают вкладки, Cmd+K очищает экран, Cmd+F ищет.
+bindings = [
+  # Буфер обмена: Cmd+C / Cmd+X внутри nvim работают с выделением nvim
+  { key = "C",         mods = "Command",             mode = "Alt", chars = "\u001b[99;9u" },   # Copy
+  { key = "X",         mods = "Command",             mode = "Alt", chars = "\u001b[120;9u" },  # Cut
+
+  # Файл и редактирование
+  { key = "S",         mods = "Command", mode = "Alt",             chars = "\u001b[115;9u" },  # Save
+  { key = "Z",         mods = "Command", mode = "Alt",             chars = "\u001b[122;9u" },  # Undo
+  { key = "Z",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[122;10u" }, # Redo
+  { key = "A",         mods = "Command", mode = "Alt",             chars = "\u001b[97;9u" },   # Select all
+  { key = "D",         mods = "Command", mode = "Alt",             chars = "\u001b[100;9u" },  # Duplicate line
+  { key = "Back",      mods = "Command", mode = "Alt",             chars = "\u001b[127;9u" },  # Delete line
+  { key = "/",         mods = "Command", mode = "Alt",             chars = "\u001b[47;9u" },   # Comment line
+  { key = "F",         mods = "Command", mode = "Alt",             chars = "\u001b[102;9u" },  # Find
+  { key = "R",         mods = "Command", mode = "Alt",             chars = "\u001b[114;9u" },  # Replace
+  { key = "L",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[108;11u" }, # Reformat code
+
+  # Навигация
+  { key = "O",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[111;10u" }, # Go to file
+  { key = "O",         mods = "Command", mode = "Alt",             chars = "\u001b[111;9u" },  # Go to symbol/class
+  { key = "F12",       mods = "Command", mode = "Alt",             chars = "\u001b[24;9~" },   # File structure
+  { key = "E",         mods = "Command", mode = "Alt",             chars = "\u001b[101;9u" },  # Recent files
+  { key = "F",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[102;10u" }, # Find in files
+  { key = "A",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[97;10u" },  # Find action
+  { key = "B",         mods = "Command", mode = "Alt",             chars = "\u001b[98;9u" },   # Go to declaration
+  { key = "B",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[98;11u" },  # Go to implementation
+  { key = "P",         mods = "Command", mode = "Alt",             chars = "\u001b[112;9u" },  # Parameter info
+  { key = "F1",        mods = "Command", mode = "Alt",             chars = "\u001b[1;9P" },    # Error description
+  { key = "[",         mods = "Command", mode = "Alt",             chars = "\u001b[91;9u" },   # Navigate back
+  { key = "]",         mods = "Command", mode = "Alt",             chars = "\u001b[93;9u" },   # Navigate forward
+
+  # Вкладки и панели
+  { key = "1",         mods = "Command", mode = "Alt",             chars = "\u001b[49;9u" },   # Project tool window
+  { key = "W",         mods = "Command", mode = "Alt",             chars = "\u001b[119;9u" },  # Close tab
+  { key = "[",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[91;10u" },  # Previous tab
+  { key = "]",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[93;10u" },  # Next tab
+
+  # Вкладки и окна Alacritty (Cmd+W, Cmd+1, Cmd+9, Cmd+Shift+[ ] заняты под nvim)
+  { key = "Tab",       mods = "Control",             action = "SelectNextTab" },
+  { key = "Tab",       mods = "Control|Shift",       action = "SelectPreviousTab" },
+
+  # Терминалы в nvim: Option+Shift+1/2/3, в код — Option+Shift+0 (работает на любой раскладке)
+  { key = "1",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[49;4u" },
+  { key = "2",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[50;4u" },
+  { key = "3",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[51;4u" },
+  { key = "0",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[48;4u" },
+  { key = "!",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[49;4u" },
+  { key = "@",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[50;4u" },
+  { key = "#",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[51;4u" },
+  { key = ")",         mods = "Alt|Shift", mode = "Alt",           chars = "\u001b[48;4u" },
+  # Option+3 печатает решётку
+  { key = "3",         mods = "Alt",                 chars = "#" },
+
+  # Запуск (как Run в WebStorm)
+  { key = "R",         mods = "Control|Shift", mode = "Alt",       chars = "\u001b[114;6u" },  # Run current file
+  { key = "F2",        mods = "Command", mode = "Alt",             chars = "\u001b[1;9Q" },    # Stop
+
+  # Problems и замена по проекту
+  { key = "6",         mods = "Command",             mode = "Alt", chars = "\u001b[54;9u" },   # Problems
+  { key = "R",         mods = "Command|Shift",       mode = "Alt", chars = "\u001b[114;10u" }, # Replace in Files
+
+  # Git
+  { key = "K",         mods = "Command", mode = "Alt",             chars = "\u001b[107;9u" },  # Commit (все изменения)
+  { key = "9",         mods = "Command", mode = "Alt",             chars = "\u001b[57;9u" },   # Git tool window
+  { key = "Z",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[122;11u" }, # Rollback
+
+  # То же самое для русской раскладки (оба регистра: Alacritty может прислать любой)
+  { key = "С",         mods = "Command",             mode = "Alt", chars = "\u001b[99;9u" },
+  { key = "с",         mods = "Command",             mode = "Alt", chars = "\u001b[99;9u" },
+  { key = "Ч",         mods = "Command",             mode = "Alt", chars = "\u001b[120;9u" },
+  { key = "ч",         mods = "Command",             mode = "Alt", chars = "\u001b[120;9u" },
+  { key = "Ы",         mods = "Command", mode = "Alt",             chars = "\u001b[115;9u" },
+  { key = "ы",         mods = "Command", mode = "Alt",             chars = "\u001b[115;9u" },
+  { key = "Я",         mods = "Command", mode = "Alt",             chars = "\u001b[122;9u" },
+  { key = "я",         mods = "Command", mode = "Alt",             chars = "\u001b[122;9u" },
+  { key = "Я",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[122;10u" },
+  { key = "я",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[122;10u" },
+  { key = "Ф",         mods = "Command", mode = "Alt",             chars = "\u001b[97;9u" },
+  { key = "ф",         mods = "Command", mode = "Alt",             chars = "\u001b[97;9u" },
+  { key = "В",         mods = "Command", mode = "Alt",             chars = "\u001b[100;9u" },
+  { key = "в",         mods = "Command", mode = "Alt",             chars = "\u001b[100;9u" },
+  { key = "А",         mods = "Command", mode = "Alt",             chars = "\u001b[102;9u" },
+  { key = "а",         mods = "Command", mode = "Alt",             chars = "\u001b[102;9u" },
+  { key = "К",         mods = "Command", mode = "Alt",             chars = "\u001b[114;9u" },
+  { key = "к",         mods = "Command", mode = "Alt",             chars = "\u001b[114;9u" },
+  { key = "Д",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[108;11u" },
+  { key = "д",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[108;11u" },
+  { key = "Щ",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[111;10u" },
+  { key = "щ",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[111;10u" },
+  { key = "Щ",         mods = "Command", mode = "Alt",             chars = "\u001b[111;9u" },
+  { key = "щ",         mods = "Command", mode = "Alt",             chars = "\u001b[111;9u" },
+  { key = "У",         mods = "Command", mode = "Alt",             chars = "\u001b[101;9u" },
+  { key = "у",         mods = "Command", mode = "Alt",             chars = "\u001b[101;9u" },
+  { key = "А",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[102;10u" },
+  { key = "а",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[102;10u" },
+  { key = "Ф",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[97;10u" },
+  { key = "ф",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[97;10u" },
+  { key = "И",         mods = "Command", mode = "Alt",             chars = "\u001b[98;9u" },
+  { key = "и",         mods = "Command", mode = "Alt",             chars = "\u001b[98;9u" },
+  { key = "И",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[98;11u" },
+  { key = "и",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[98;11u" },
+  { key = "З",         mods = "Command", mode = "Alt",             chars = "\u001b[112;9u" },
+  { key = "з",         mods = "Command", mode = "Alt",             chars = "\u001b[112;9u" },
+  { key = "х",         mods = "Command", mode = "Alt",             chars = "\u001b[91;9u" },
+  { key = "ъ",         mods = "Command", mode = "Alt",             chars = "\u001b[93;9u" },
+  { key = "Ц",         mods = "Command", mode = "Alt",             chars = "\u001b[119;9u" },
+  { key = "ц",         mods = "Command", mode = "Alt",             chars = "\u001b[119;9u" },
+  { key = "х",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[91;10u" },
+  { key = "ъ",         mods = "Command|Shift", mode = "Alt",       chars = "\u001b[93;10u" },
+  { key = "К",         mods = "Control|Shift", mode = "Alt",       chars = "\u001b[114;6u" },
+  { key = "к",         mods = "Control|Shift", mode = "Alt",       chars = "\u001b[114;6u" },
+  { key = "К",         mods = "Command|Shift",       mode = "Alt", chars = "\u001b[114;10u" },
+  { key = "к",         mods = "Command|Shift",       mode = "Alt", chars = "\u001b[114;10u" },
+  { key = "Л",         mods = "Command", mode = "Alt",             chars = "\u001b[107;9u" },
+  { key = "л",         mods = "Command", mode = "Alt",             chars = "\u001b[107;9u" },
+  { key = "Я",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[122;11u" },
+  { key = "я",         mods = "Command|Alt", mode = "Alt",         chars = "\u001b[122;11u" },
+  { key = "С",         mods = "Command",             mode = "~Alt", action = "Copy" },
+  { key = "с",         mods = "Command",             mode = "~Alt", action = "Copy" },
+  { key = "М",         mods = "Command",             action = "Paste" },
+  { key = "м",         mods = "Command",             action = "Paste" },
+]
